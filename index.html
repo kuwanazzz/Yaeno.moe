@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ei, ei, mun! - tannhauser.moe</title>
+        <meta name="author" content="Kawaii Shadowii">
+        <meta name="description" content="The website for Matikane Tannhäuser, the cutest Uma Musume out there.">
+        <meta name="keywords" content="uma,musume,uma musume,matikane,tannhäuser,matikane tannhäuser,tannhauser,matikane tannhauser,uma musume pretty derby,pretty,derby,pretty derby,ウマ娘,ウマ娘プリティーダービー,プリティーダービー,マチカネ,タンホイザ,マチカネタンホイザ">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+        <meta property="og:title" content="Ei, ei, mun! - tannhauser.moe">
+        <meta property="og:description" content="The website for Matikane Tannhäuser, the cutest Uma Musume out there.">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://www.tannhauser.moe/">
+        <meta property="og:image" content="https://www.tannhauser.moe/img/TannhauserHappy.png">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:title" content="Ei, ei, mun! - tannhauser.moe">
+        <meta name="twitter:description" content="The website for Matikane Tannhäuser, the cutest Uma Musume out there.">
+        <meta name="twitter:image" content="https://www.tannhauser.moe/img/TannhauserHappy.png">
+        <link rel="stylesheet" href="style.css" type="text/css">
+        <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+        <link rel="canonical" href="https://www.tannhauser.moe/">
+        <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+        <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+    </head>
+    <body>
+        <img src="img/ChibiTannhauser1.png" class="preload">
+        <img src="img/ChibiTannhauser2.png" class="preload">
+        <div id="content">
+            <h1>Welcome to Yaeno.moe</h1>
+            <hr id="subtitle-seperator">
+            <h2>The website for Yaeno Muteki, the cutest and strongest Uma Musume out there.</h2>
+            <div id="counter-container">
+                <p>The 0ssu has been squished</p>
+                <p id="counter">0</p>
+                <p>times</p>
+                <button id="counter-button" onclick="counterClick()">Squish the mun~!</button>
+            </div>
+            <div id="implementation-container">
+                <h2 id="implementation-header">She's coming to the English version in:</h2>
+                <p id="implementation-countdown"></p>
+            </div>
+            <div id="video-container">
+                <h2 id="video-title">Machitan Concerts</h2>
+                <p id="video-subtitle">(Click on the image to view the video.)</p>
+                <hr>
+                <div id="video-item-container"></div>
+            </div>
+            <h2 id="gallery-title">Machitan Photo Gallery</h2>
+            <p id="gallery-subtitle">(Click on the image to view the source.)</p>
+            <hr>
+            <div id="grid">
+                <noscript>Your browser does not support JavaScript or JavaScript has been disabled.<br>This website relies on JavaScript, so please enable it or use another browser.</noscript>
+            </div>
+        </div>
+        <div id="footer">
+            <img id="trainer-profile" loading="lazy" src="img/TrainerProfile.webp" alt="">
+            <div id="footer-text">
+                <p id="footer-header-text">If you have any suggestions in terms of features/images <span class="no-break">(including source),</span> don't hesitate to contact me here:</p>
+                <p><iconify-icon icon="ic:baseline-discord" id="discord-footer-icon" class="footer-icon"></iconify-icon><span class="footer-icon-text">kawaii_shadowii</span></p>
+                <p><a href="https://twitter.com/Kawaii_Shadowii" target="_blank"><iconify-icon icon="mdi:twitter" id="twitter-footer-icon" class="footer-icon"></iconify-icon><span class="footer-icon-text">@Kawaii_Shadowii</span></a></p>
+                <p><a href="https://github.com/KawaiiShadowii" target="_blank"><iconify-icon icon="mdi:github" id="github-footer-icon" class="footer-icon"></iconify-icon><span class="footer-icon-text">KawaiiShadowii</span></a></p>
+                <p id="footer-repository-text">You can check out the GitHub repository here:</p>
+                <p><a href="https://github.com/KawaiiShadowii/tannhauser.moe" target="_blank"><iconify-icon icon="mdi:github" id="github-footer-icon" class="footer-icon"></iconify-icon><span class="footer-icon-text">tannhauser.moe Repository</span></a></p>
+            </div>
+        </div>
+        <script type="text/javascript">
+            //#region Global Variables
+            var audioList = [
+                new Audio("audio/ganbaru.mp3"),
+                new Audio("audio/mun1.mp3"),
+                new Audio("audio/mun2.mp3"),
+                new Audio("audio/mun3.mp3"),
+                new Audio("audio/mun4.mp3"),
+                new Audio("audio/mun5.mp3"),
+                new Audio("audio/mun6.mp3"),
+                new Audio("audio/mun7.mp3"),
+                new Audio("audio/mun8.mp3"),
+                new Audio("audio/mun9.mp3"),
+                new Audio("audio/mun10.mp3")
+            ];
+
+            for (const audio of audioList) {
+                audio.preload = "auto";
+            };
+
+            var counter = 0;
+            var lastThreeSecondsCounter = 0;
+            var temporaryCounter = 0;
+            var firstSquish = true;
+
+            var grid_element = document.querySelector("#grid");
+            var msnry;
+
+            var playerReady = false;
+
+            var videoIds = [
+                "bVzgjJaer3c",
+                "sGvUskSGjFo",
+                "eYdFB3sLo5w",
+                "iMzUHmmtQwE",
+                "53ewYaWqGq8",
+                "jCW3VvZTtNY",
+                "ckgzzAenSlY",
+                "lve4fQCDkYM"
+            ]
+
+            const IMPLEMENTATED_DATETIME = new Date("2026-03-13T22:00:00Z");
+            //#endregion
+
+            //#region Autostart
+            function autorun() {                
+                loadVideos();
+                squishMuns();
+                loadImages();
+                removePreloads();
+                updateCountdown();
+            }
+
+            function squishMuns() {
+                setMunCounter();
+                setTimeout(squishMuns, 3000)
+            }
+
+            function setMunCounter() {
+                var counterElement = document.getElementById("counter");
+                
+                var req = new XMLHttpRequest();
+                req.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var data = JSON.parse(this.responseText);
+                        counter = data.muns;
+                        temporaryCounter = 0;
+                        counterElement.textContent = (counter + lastThreeSecondsCounter).toLocaleString();
+                    }
+                }
+
+                req.open("POST", "https://umapyoi.net/api/v1/mun");
+                var bodyString = JSON.stringify({"muns": lastThreeSecondsCounter})
+                temporaryCounter = lastThreeSecondsCounter;
+                lastThreeSecondsCounter = 0;
+                req.send(bodyString);
+            }
+
+            function loadVideos() {
+                var videoItemContainer = document.getElementById("video-item-container");
+                var counter = 0;
+
+                for (const videoId of videoIds) {
+                    counter++;
+                    let thumbnailId = `thumbnail${counter}`;
+                    let playerId = `player${counter}`;
+
+                    var videoItem = document.createElement("div");
+                    videoItem.classList.add("video-item");
+                    videoItem.setAttribute("data-videoId", videoId);
+
+                    var thumbnail = document.createElement("img");
+                    thumbnail.loading = "lazy";
+                    thumbnail.id = thumbnailId;
+                    thumbnail.src= `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+                    thumbnail.alt = "";
+                    thumbnail.onclick = function(){createPlayer(videoId, playerId, thumbnailId)};
+                    videoItem.appendChild(thumbnail);
+
+                    var player = document.createElement("div");
+                    player.id = playerId;
+                    videoItem.appendChild(player);
+
+                    videoItemContainer.appendChild(videoItem);
+                };
+            }
+            
+            function loadImages() {
+                var req = new XMLHttpRequest();
+                req.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var data = JSON.parse(this.responseText);
+                        data = data.sort(() => Math.random() - 0.5)
+
+                        var contentWidth = window.innerWidth * 0.8
+                        var placeholderWidth = 0
+
+                        if (window.innerWidth <= 500) {
+                            placeholderWidth = contentWidth - 10;
+                        } else if (window.innerWidth <= 854) {
+                            placeholderWidth = contentWidth * 0.5 - 10;
+                        } else if (window.innerWidth <= 1280) {
+                            placeholderWidth = contentWidth / 3 - 10;
+                        } else if (window.innerWidth <= 1920) {
+                            placeholderWidth = contentWidth * 0.25 - 10;
+                        } else if (window.innerWidth <= 2240) {
+                            placeholderWidth = contentWidth * 0.2 - 10;
+                        } else {
+                            placeholderWidth = contentWidth / 6 - 10;
+                        }
+
+                        for (const entry of data) {                            
+                            var twitter_link = document.createElement("a");
+                            twitter_link.href = entry.link;
+                            twitter_link.target = "_blank";
+                            twitter_link.classList.add("twitter-link");
+                            twitter_link.classList.add("grid-item");
+
+                            var twitter_img = document.createElement("img");
+                            twitter_img.loading = "lazy";
+                            twitter_img.src = entry.img;
+                            twitter_img.width = placeholderWidth;
+                            twitter_img.height = placeholderWidth;
+                            twitter_img.classList.add("twitter-img");
+                            twitter_img.alt = "";
+                            twitter_img.addEventListener("load", function() {
+                                msnry.layout();
+                            });
+
+                            twitter_link.appendChild(twitter_img);
+                            grid_element.appendChild(twitter_link);
+                        }
+
+                        msnry = new Masonry( grid_element, {
+                            itemSelector: '.grid-item',
+                            percentPosition: true
+                        });
+                    }                                
+                }
+
+                req.open("GET", "images.json");
+                req.send();  
+            }
+
+            function removePreloads() {
+                var preloads = [...document.getElementsByClassName("preload")]; // What the mun~ is this???
+
+                for (const preload of preloads) {
+                    document.body.removeChild(preload);
+                }
+            }
+            //#endregion
+
+            //#region Counter Button
+            function counterClick() {
+                var counterElement = document.getElementById("counter");                
+                lastThreeSecondsCounter += 1;
+                counterElement.textContent = (counter + lastThreeSecondsCounter + temporaryCounter).toLocaleString();             
+
+                playMun();
+                animateTannhauser();
+            }
+
+            function playMun() {
+                var audio;
+
+                if (firstSquish) {
+                    firstSquish = false;
+                    audio = audioList[0].cloneNode();
+                } else {
+                    var random = Math.floor(Math.random() * 10) + 1;
+                    audio = audioList[random].cloneNode();
+                }
+
+                audio.play();
+
+                audio.addEventListener("ended", function(){
+                   this.remove();
+                });
+            }
+
+            function animateTannhauser() {
+                var counter_button = document.getElementById("counter-button");
+                var id = null;
+
+                var random = Math.floor(Math.random() * 2) + 1;
+                var elem = document.createElement("img");
+                elem.src = `img/ChibiTannhauser${random}.png`;
+                elem.style.position = "absolute";
+                elem.style.right = "-256px";
+                elem.style.top = counter_button.getClientRects()[0].bottom + scrollY - 256 + "px"
+                elem.style.zIndex = "-1";
+                document.body.appendChild(elem);
+
+                var pos = -256;
+                var limit = window.innerWidth + 256;
+                clearInterval(id);
+                id = setInterval(frame, 10);
+                function frame() {
+                    if (pos >= limit) {
+                    clearInterval(id);
+                    elem.remove()
+                    } else {
+                    pos += 20;
+                    elem.style.right = pos + 'px'; 
+                    }
+                }
+            }
+            //#endregion
+            
+            //#region YouTube player
+            var tag = document.createElement('script');
+
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+            function onYouTubeIframeAPIReady() {
+                playerReady = true;
+            }
+
+            function createPlayer(videoId, playerId, thumbnailId) {
+                if (playerReady) {
+                    var thumbnail = document.getElementById(thumbnailId);
+                    thumbnail.style.display = "none";
+                    new YT.Player(playerId, {
+                        height: "100%",
+                        width: "100%",
+                        videoId: videoId,
+                        playerVars: {
+                            "playsinline": 1
+                        },
+                        events: {
+                            "onReady": onPlayerReady,
+                            "onStateChange": onPlayerStateChange
+                        }
+                    });
+                } else {
+                    setTimeout(createPlayer, 1000)
+                }
+            }
+
+            function onPlayerReady(event) {
+                event.target.playVideo();
+            }
+
+            function onPlayerStateChange(event) {
+                if (event.data == YT.PlayerState.ENDED) {
+                    event.target.stopVideo();
+                }
+            }
+            //#endregion
+
+            //#region Countdown
+            function updateCountdown() {
+                let countdownHeader = document.getElementById("implementation-header");
+                let countdownElement = document.getElementById("implementation-countdown");
+
+                let now = new Date();
+
+                if (now >= IMPLEMENTATED_DATETIME) {
+                    countdownHeader.textContent = "Machitan is available in the English version now! 🥳🎉 Ei, ei, mun!";
+                    countdownElement.textContent = "";
+                    return;
+                }
+
+                let seconds = Math.floor((IMPLEMENTATED_DATETIME - now) / 1000);
+
+                countdownElement.textContent = generateCountdownString(seconds);
+
+                setTimeout(updateCountdown, 1000);
+            }
+
+            function generateCountdownString(input_seconds) {
+                let days = Math.floor(input_seconds / (60 * 60 * 24));
+                let hours = Math.floor((input_seconds % (60 * 60 * 24)) / (60 * 60));
+                let minutes = Math.floor((input_seconds % (60 * 60)) / 60);
+                let seconds = Math.floor(input_seconds % 60);
+
+                return `${days} day${days === 1 ? '' : 's'}, ${hours} hour${hours === 1 ? '' : 's'}, ${minutes} minute${minutes === 1 ? '' : 's'}, ${seconds} second${seconds === 1 ? '' : 's'} (estimated)`;
+            }
+            //#endregion
+
+            window.onload = autorun();
+        </script>
+    </body>
+</html>
